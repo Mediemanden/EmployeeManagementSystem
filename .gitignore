@@ -1,0 +1,26 @@
+# Ignore compiled binaries
+*.exe
+*.dll
+
+# Ignore build output directories
+/bin/
+/obj/
+
+# Ignore IDE and editor specific files
+.vscode/
+.idea/
+
+# Ignore package manager directories
+/node_modules/
+/packages/
+
+# Ignore log files
+*.log
+
+# Ignore user-specific files
+/.env
+/.env.local
+
+# Ignore operating system files
+.DS_Store
+Thumbs.db
