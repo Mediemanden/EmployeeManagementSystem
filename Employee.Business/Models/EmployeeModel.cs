@@ -8,5 +8,5 @@ public class EmployeeModel
     public required string Department { get; init; }
     public string? Email { get; init; }
     public decimal? Salary { get; init; }
-    public int Age => DateTime.Now.Year - DateOfBirth.Year; // TODO fix birthday calculation
+    public int Age => AgeHelper.CalculateAge(DateOfBirth);
 }
