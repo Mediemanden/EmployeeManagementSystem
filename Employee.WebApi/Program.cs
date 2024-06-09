@@ -1,8 +1,8 @@
 using Employee.Business;
-using Employee.Business.Commands;
 using Employee.Business.Models;
 using Employee.Business.Queries.Interfaces;
 using Employee.WebApi;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +23,23 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseExceptionHandler(exceptionHandlerApp
+    => exceptionHandlerApp.Run(async context =>
+    {
+        var exceptionHandlerPathFeature =
+                context.Features.Get<IExceptionHandlerPathFeature>();
+
+        if (exceptionHandlerPathFeature?.Error is EmsException emsException)
+        {
+            context.Response.StatusCode = 400;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsJsonAsync(new
+            {
+                error = emsException.Message
+            });
+        }
+    }));
 
 // Employees API
 app.MapGet("/employees", async ([FromServices] IGetEmployeesQuery getEmployeesQuery) =>

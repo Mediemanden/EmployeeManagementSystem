@@ -15,6 +15,8 @@ public class CreateEmployeeCommand : ICreateEmployeeCommand
 
     public Task ExecuteAsync(EmployeeModel request)
     {
+        // Validate create employee request -- Will throw an exception if invalid
+        EmployeeValidator.ValidateEmployee(request);
 
         var employee = new EmployeeEntity
         {

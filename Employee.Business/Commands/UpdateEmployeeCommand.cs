@@ -15,6 +15,9 @@ public class UpdateEmployeeCommand : IUpdateEmployeeCommand
 
     public async Task ExecuteAsync(EmployeeModel request)
     {
+        // Validate update employee request -- Will throw an exception if invalid
+        EmployeeValidator.ValidateEmployee(request);
+
         EmployeeEntity? employeeEntity = await _employeeStorage.GetEmployeeAsync(request.Id);
 
         if (employeeEntity == null)

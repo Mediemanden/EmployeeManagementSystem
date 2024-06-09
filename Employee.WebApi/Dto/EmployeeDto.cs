@@ -12,6 +12,6 @@ public class EmployeeDto
 
     public string? Email { get; set; }
 
-    [Range(1, double.MaxValue)]
+    [Range(0, double.MaxValue)]
     public decimal? Salary { get; set; }
 }
