@@ -1,14 +1,15 @@
 ﻿using Employee.Business.Models;
 using Employee.DataAccess;
 using Employee.DataAccess.Interfaces;
+using Employee.DataAccess.Storage.Interfaces;
 
 namespace Employee.Business;
 
 public class UpdateEmployeeCommand : IUpdateEmployeeCommand
 {
-    private readonly IEmployeeStorage _employeeStorage;
+    private readonly IEmployeeStorageWithMemoryCache _employeeStorage;
 
-    public UpdateEmployeeCommand(IEmployeeStorage employeeStorage)
+    public UpdateEmployeeCommand(IEmployeeStorageWithMemoryCache employeeStorage)
     {
         _employeeStorage = employeeStorage;
     }

@@ -1,14 +1,14 @@
 ﻿using Employee.Business.Models;
 using Employee.Business.Queries.Interfaces;
-using Employee.DataAccess.Interfaces;
+using Employee.DataAccess.Storage.Interfaces;
 
 namespace Employee.Business;
 
 public class GetEmployeeQuery : IGetEmployeeQuery
 {
-    private readonly IEmployeeStorage _employeeStorage;
+    private readonly IEmployeeStorageWithMemoryCache _employeeStorage;
 
-    public GetEmployeeQuery(IEmployeeStorage employeeStorage)
+    public GetEmployeeQuery(IEmployeeStorageWithMemoryCache employeeStorage)
     {
         _employeeStorage = employeeStorage;
     }

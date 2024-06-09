@@ -1,14 +1,15 @@
 ﻿using Employee.Business.Models;
 using Employee.DataAccess;
 using Employee.DataAccess.Interfaces;
+using Employee.DataAccess.Storage.Interfaces;
 
 namespace Employee.Business.Commands;
 
 public class CreateEmployeeCommand : ICreateEmployeeCommand
 {
-    private readonly IEmployeeStorage _employeeStorage;
+    private readonly IEmployeeStorageWithMemoryCache _employeeStorage;
 
-    public CreateEmployeeCommand(IEmployeeStorage employeeStorage)
+    public CreateEmployeeCommand(IEmployeeStorageWithMemoryCache employeeStorage)
     {
         _employeeStorage = employeeStorage;
     }

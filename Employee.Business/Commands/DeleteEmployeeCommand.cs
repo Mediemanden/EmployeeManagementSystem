@@ -1,13 +1,14 @@
 ﻿
 using Employee.DataAccess.Interfaces;
+using Employee.DataAccess.Storage.Interfaces;
 
 namespace Employee.Business;
 
 public class DeleteEmployeeCommand : IDeleteEmployeeCommand
 {
-    readonly IEmployeeStorage _employeeStorage;
+    readonly IEmployeeStorageWithMemoryCache _employeeStorage;
 
-    public DeleteEmployeeCommand(IEmployeeStorage employeeStorage)
+    public DeleteEmployeeCommand(IEmployeeStorageWithMemoryCache employeeStorage)
     {
         _employeeStorage = employeeStorage;
     }

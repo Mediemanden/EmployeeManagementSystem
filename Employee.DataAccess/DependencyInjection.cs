@@ -1,4 +1,6 @@
-﻿using Employee.DataAccess.Interfaces;
+﻿using System.Runtime.Serialization;
+using Employee.DataAccess.Interfaces;
+using Employee.DataAccess.Storage.Interfaces;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +18,10 @@ public static class DependencyInjection
             options.UseSqlite("Filename=:memory:");
         });
 
+        services.AddMemoryCache();
+
         services.AddScoped<IEmployeeStorage, EmployeeStorage>();
+        services.AddScoped<IEmployeeStorageWithMemoryCache, EmployeeStorageWithMemoryCache>();
 
         return services;
     }
