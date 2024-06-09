@@ -27,18 +27,18 @@ app.UseHttpsRedirection();
 // Employees API
 app.MapGet("/employees", async ([FromServices] IGetEmployeesQuery getEmployeesQuery) =>
 {
-    return TypedResults.Ok(await getEmployeesQuery.ExecuteAsync(new SearchEmployeesRequest()));
+    IEnumerable<EmployeeModel> employees = await getEmployeesQuery.ExecuteAsync(new SearchEmployeesRequest());
+
+    return TypedResults.Ok(employees.Select(employee => employee.MapToDto()));
 })
-.WithName("GetEmployees")
-.WithOpenApi();
+.WithName("GetEmployees");
 
 app.MapGet("/employees/{id}", async ([FromServices] IGetEmployeeQuery getEmployeeQuery, Guid id) =>
 {
     EmployeeModel employee = await getEmployeeQuery.ExecuteAsync(id);
     return TypedResults.Ok(employee.MapToDto());
 })
-.WithName("GetEmployeeById")
-.WithOpenApi();
+.WithName("GetEmployeeById");
 
 app.MapPost("/employees", async ([FromServices] ICreateEmployeeCommand createEmployeeCommand, CreateEmployeeDto employee) =>
 {
@@ -46,24 +46,21 @@ app.MapPost("/employees", async ([FromServices] ICreateEmployeeCommand createEmp
     await createEmployeeCommand.ExecuteAsync(employee.MapToModel(newEmployeeId));
     return TypedResults.Created($"/employees/{newEmployeeId}", newEmployeeId);
 })
-.WithName("CreateEmployee")
-.WithOpenApi();
+.WithName("CreateEmployee");
 
 app.MapPut("/employees/{id}", async ([FromServices] IUpdateEmployeeCommand updateEmployeeCommand, Guid id, CreateEmployeeDto employee) =>
 {
     await updateEmployeeCommand.ExecuteAsync(employee.MapToModel(id));
     return Results.NoContent();
 })
-.WithName("UpdateEmployee")
-.WithOpenApi();
+.WithName("UpdateEmployee");
 
 app.MapDelete("/employees/{id}", async ([FromServices] IDeleteEmployeeCommand deleteEmployeeCommand, Guid id) =>
 {
     await deleteEmployeeCommand.ExecuteAsync(id);
     return Results.NoContent();
 })
-.WithName("DeleteEmployee")
-.WithOpenApi();
+.WithName("DeleteEmployee");
 
 app.MapGet("/employees/search/", async ([FromServices] ISearchEmployeesQuery searchEmployeesQuery, string? name, string? department) =>
 {
@@ -73,7 +70,8 @@ app.MapGet("/employees/search/", async ([FromServices] ISearchEmployeesQuery sea
         Department = department,
     };
 
-    return TypedResults.Ok(await searchEmployeesQuery.ExecuteAsync(request));
+    IEnumerable<EmployeeModel> employees = await searchEmployeesQuery.ExecuteAsync(request);
+    return TypedResults.Ok(employees.Select(employee => employee.MapToDto()));
 })
 .WithName("SearchEmployeeByName");
 
