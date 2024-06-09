@@ -1,5 +1,6 @@
 ﻿using Employee.Business;
-using Employee.Business.Commands;
+using Microsoft.AspNetCore.Mvc;
+using Employee.DataAccess;
 
 namespace Employee.WebApi;
 
@@ -15,6 +16,7 @@ public static class WebApiServiceRegistration
     private static void AddDependencies(this IServiceCollection services)
     {
         services.AddBusinessDependencies();
+        services.AddDataAccessDependencies();
     }
 
 }
