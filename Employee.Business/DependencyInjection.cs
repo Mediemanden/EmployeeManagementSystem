@@ -1,4 +1,5 @@
 ﻿using Employee.Business.Commands;
+using Employee.Business.Queries.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Employee.Business;
@@ -7,11 +8,12 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddBusinessDependencies(this IServiceCollection services)
     {
-        services.AddScoped<ICreateEmployeeCommand, CreateEmployeeCommand>();
-        services.AddScoped<IGetEmployeeQuery, GetEmployeeQuery>();
-        services.AddScoped<IGetEmployeesQuery, GetEmployeesQuery>();
-        services.AddScoped<IUpdateEmployeeCommand, UpdateEmployeeCommand>();
-        services.AddScoped<IDeleteEmployeeCommand, DeleteEmployeeCommand>();
+        services.AddTransient<ICreateEmployeeCommand, CreateEmployeeCommand>();
+        services.AddTransient<IGetEmployeeQuery, GetEmployeeQuery>();
+        services.AddTransient<IGetEmployeesQuery, GetEmployeesQuery>();
+        services.AddTransient<IUpdateEmployeeCommand, UpdateEmployeeCommand>();
+        services.AddTransient<IDeleteEmployeeCommand, DeleteEmployeeCommand>();
+        services.AddTransient<ISearchEmployeesQuery, SearchEmployeesQuery>();
 
         return services;
     }

@@ -45,4 +45,12 @@ public class EmployeeStorage : IEmployeeStorage
             await _dbContext.SaveChangesAsync();
         }
     }
+
+    public async Task<List<EmployeeEntity>> SearchEmployeesAsync(string? name, string? department)
+    {
+        return await _dbContext.Employees.Where(e =>
+            (name == null || e.FullName.ToLower().Contains(name.ToLower()))
+            && (department == null || e.Department.ToLower().Contains(department.ToLower())))
+            .ToListAsync();
+    }
 }

@@ -1,4 +1,4 @@
-﻿namespace Employee.Business;
+﻿namespace Employee.Business.Queries.Interfaces;
 
 public interface IQuery<TResult, TRequest>
 {

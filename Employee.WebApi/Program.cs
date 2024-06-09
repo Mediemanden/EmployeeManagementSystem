@@ -1,7 +1,9 @@
 using Employee.Business;
 using Employee.Business.Commands;
 using Employee.Business.Models;
+using Employee.Business.Queries.Interfaces;
 using Employee.WebApi;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,14 +25,14 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // Employees API
-app.MapGet("/employees", async (IGetEmployeesQuery getEmployeesQuery) =>
+app.MapGet("/employees", async ([FromServices] IGetEmployeesQuery getEmployeesQuery) =>
 {
-    return TypedResults.Ok(await getEmployeesQuery.ExecuteAsync(new GetEmployeesRequest()));
+    return TypedResults.Ok(await getEmployeesQuery.ExecuteAsync(new SearchEmployeesRequest()));
 })
 .WithName("GetEmployees")
 .WithOpenApi();
 
-app.MapGet("/employees/{id}", async (IGetEmployeeQuery getEmployeeQuery, Guid id) =>
+app.MapGet("/employees/{id}", async ([FromServices] IGetEmployeeQuery getEmployeeQuery, Guid id) =>
 {
     EmployeeModel employee = await getEmployeeQuery.ExecuteAsync(id);
     return TypedResults.Ok(employee.MapToDto());
@@ -38,7 +40,7 @@ app.MapGet("/employees/{id}", async (IGetEmployeeQuery getEmployeeQuery, Guid id
 .WithName("GetEmployeeById")
 .WithOpenApi();
 
-app.MapPost("/employees", async (ICreateEmployeeCommand createEmployeeCommand, CreateEmployeeDto employee) =>
+app.MapPost("/employees", async ([FromServices] ICreateEmployeeCommand createEmployeeCommand, CreateEmployeeDto employee) =>
 {
     Guid newEmployeeId = Guid.NewGuid();
     await createEmployeeCommand.ExecuteAsync(employee.MapToModel(newEmployeeId));
@@ -47,7 +49,7 @@ app.MapPost("/employees", async (ICreateEmployeeCommand createEmployeeCommand, C
 .WithName("CreateEmployee")
 .WithOpenApi();
 
-app.MapPut("/employees/{id}", async (IUpdateEmployeeCommand updateEmployeeCommand, Guid id, CreateEmployeeDto employee) =>
+app.MapPut("/employees/{id}", async ([FromServices] IUpdateEmployeeCommand updateEmployeeCommand, Guid id, CreateEmployeeDto employee) =>
 {
     await updateEmployeeCommand.ExecuteAsync(employee.MapToModel(id));
     return Results.NoContent();
@@ -55,13 +57,26 @@ app.MapPut("/employees/{id}", async (IUpdateEmployeeCommand updateEmployeeComman
 .WithName("UpdateEmployee")
 .WithOpenApi();
 
-app.MapDelete("/employees/{id}", async (IDeleteEmployeeCommand deleteEmployeeCommand, Guid id) =>
+app.MapDelete("/employees/{id}", async ([FromServices] IDeleteEmployeeCommand deleteEmployeeCommand, Guid id) =>
 {
     await deleteEmployeeCommand.ExecuteAsync(id);
     return Results.NoContent();
 })
 .WithName("DeleteEmployee")
 .WithOpenApi();
+
+app.MapGet("/employees/search/", async ([FromServices] ISearchEmployeesQuery searchEmployeesQuery, string? name, string? department) =>
+{
+    SearchEmployeesRequest request = new()
+    {
+        Name = name,
+        Department = department,
+    };
+
+    return TypedResults.Ok(await searchEmployeesQuery.ExecuteAsync(request));
+})
+.WithName("SearchEmployeeByName");
+
 
 app.Run();
 

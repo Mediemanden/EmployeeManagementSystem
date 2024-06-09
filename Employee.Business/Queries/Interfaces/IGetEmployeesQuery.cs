@@ -1,13 +1,8 @@
 ﻿using Employee.Business.Models;
 
-namespace Employee.Business;
+namespace Employee.Business.Queries.Interfaces;
 
-public interface IGetEmployeesQuery : IQuery<IEnumerable<EmployeeModel>, GetEmployeesRequest>
+public interface IGetEmployeesQuery : IQuery<IEnumerable<EmployeeModel>, SearchEmployeesRequest>
 {
 
-}
-
-public class GetEmployeesRequest
-{
-    // TODO: create and move from GetEmployeesQuery
 }

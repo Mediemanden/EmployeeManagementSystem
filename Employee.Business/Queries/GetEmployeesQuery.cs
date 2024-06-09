@@ -1,4 +1,5 @@
 ﻿using Employee.Business.Models;
+using Employee.Business.Queries.Interfaces;
 using Employee.DataAccess.Interfaces;
 
 namespace Employee.Business;
@@ -12,7 +13,7 @@ public class GetEmployeesQuery : IGetEmployeesQuery
         _employeeStorage = employeeStorage;
     }
 
-    public async Task<IEnumerable<EmployeeModel>> ExecuteAsync(GetEmployeesRequest request)
+    public async Task<IEnumerable<EmployeeModel>> ExecuteAsync(SearchEmployeesRequest _)
     {
         List<DataAccess.EmployeeEntity> employees = await _employeeStorage.GetEmployeesAsync();
 

@@ -7,4 +7,5 @@ public interface IEmployeeStorage
     Task<List<EmployeeEntity>> GetEmployeesAsync();
     Task UpdateEmployeeAsync(EmployeeEntity employee);
     Task DeleteEmployeeAsync(Guid id);
+    Task<List<EmployeeEntity>> SearchEmployeesAsync(string? name, string? department);
 }

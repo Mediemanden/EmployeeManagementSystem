@@ -4,25 +4,20 @@ using Employee.DataAccess.Interfaces;
 
 namespace Employee.Business;
 
-public class GetEmployeeQuery : IGetEmployeeQuery
+public class SearchEmployeesQuery : ISearchEmployeesQuery
 {
     private readonly IEmployeeStorage _employeeStorage;
 
-    public GetEmployeeQuery(IEmployeeStorage employeeStorage)
+    public SearchEmployeesQuery(IEmployeeStorage employeeStorage)
     {
         _employeeStorage = employeeStorage;
     }
 
-    public async Task<EmployeeModel> ExecuteAsync(Guid request)
+    public async Task<IEnumerable<EmployeeModel>> ExecuteAsync(SearchEmployeesRequest request)
     {
-        var employee = await _employeeStorage.GetEmployeeAsync(request);
+        List<DataAccess.EmployeeEntity> employees = await _employeeStorage.SearchEmployeesAsync(request.Name, request.Department);
 
-        if (employee == null)
-        {
-            throw new Exception("Employee not found");
-        }
-
-        return new EmployeeModel
+        return employees.Select(employee => new EmployeeModel
         {
             Id = employee.Id,
             FullName = employee.FullName,
@@ -30,6 +25,6 @@ public class GetEmployeeQuery : IGetEmployeeQuery
             DateOfBirth = employee.DateOfBirth,
             Department = employee.Department,
             Salary = employee.Salary,
-        };
+        });
     }
 }
