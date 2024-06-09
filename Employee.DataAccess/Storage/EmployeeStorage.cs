@@ -30,9 +30,9 @@ public class EmployeeStorage : IEmployeeStorage
         return await _dbContext.Employees.ToListAsync();
     }
 
-    public async Task UpdateEmployeeAsync(EmployeeEntity employee)
+    public async Task UpdateEmployeeAsync(EmployeeEntity updatedEmployee)
     {
-        _dbContext.Employees.Update(employee);
+        _dbContext.Employees.Update(updatedEmployee);
         await _dbContext.SaveChangesAsync();
     }
 

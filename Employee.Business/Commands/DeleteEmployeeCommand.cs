@@ -1,10 +1,19 @@
 ﻿
+using Employee.DataAccess.Interfaces;
+
 namespace Employee.Business;
 
 public class DeleteEmployeeCommand : IDeleteEmployeeCommand
 {
-    public Task ExecuteAsync(Guid request)
+    readonly IEmployeeStorage _employeeStorage;
+
+    public DeleteEmployeeCommand(IEmployeeStorage employeeStorage)
     {
-        throw new NotImplementedException();
+        _employeeStorage = employeeStorage;
+    }
+
+    public async Task ExecuteAsync(Guid request)
+    {
+        await _employeeStorage.DeleteEmployeeAsync(request);
     }
 }

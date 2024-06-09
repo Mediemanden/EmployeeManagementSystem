@@ -50,7 +50,7 @@ app.MapPost("/employees", async (ICreateEmployeeCommand createEmployeeCommand, C
 app.MapPut("/employees/{id}", async (IUpdateEmployeeCommand updateEmployeeCommand, Guid id, CreateEmployeeDto employee) =>
 {
     await updateEmployeeCommand.ExecuteAsync(employee.MapToModel(id));
-    return Results.Ok(employee);
+    return Results.NoContent();
 })
 .WithName("UpdateEmployee")
 .WithOpenApi();
@@ -58,7 +58,7 @@ app.MapPut("/employees/{id}", async (IUpdateEmployeeCommand updateEmployeeComman
 app.MapDelete("/employees/{id}", async (IDeleteEmployeeCommand deleteEmployeeCommand, Guid id) =>
 {
     await deleteEmployeeCommand.ExecuteAsync(id);
-    return Results.Accepted();
+    return Results.NoContent();
 })
 .WithName("DeleteEmployee")
 .WithOpenApi();

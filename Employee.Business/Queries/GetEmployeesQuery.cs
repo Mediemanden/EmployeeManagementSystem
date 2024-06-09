@@ -1,11 +1,29 @@
 ﻿using Employee.Business.Models;
+using Employee.DataAccess.Interfaces;
 
 namespace Employee.Business;
 
 public class GetEmployeesQuery : IGetEmployeesQuery
 {
-    public Task<IEnumerable<EmployeeModel>> ExecuteAsync(GetEmployeesRequest request)
+    private readonly IEmployeeStorage _employeeStorage;
+
+    public GetEmployeesQuery(IEmployeeStorage employeeStorage)
     {
-        throw new NotImplementedException();
+        _employeeStorage = employeeStorage;
+    }
+
+    public async Task<IEnumerable<EmployeeModel>> ExecuteAsync(GetEmployeesRequest request)
+    {
+        List<DataAccess.EmployeeEntity> employees = await _employeeStorage.GetEmployeesAsync();
+
+        return employees.Select(employee => new EmployeeModel
+        {
+            Id = employee.Id,
+            FullName = employee.FullName,
+            Email = employee.Email,
+            DateOfBirth = employee.DateOfBirth,
+            Department = employee.Department,
+            Salary = employee.Salary,
+        });
     }
 }
