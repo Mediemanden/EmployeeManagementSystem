@@ -1,11 +1,7 @@
-﻿namespace Employee.DataAccess.Storage.Interfaces;
+﻿using Employee.DataAccess.Interfaces;
 
-public interface IEmployeeStorageWithMemoryCache
+namespace Employee.DataAccess.Storage.Interfaces;
+
+public interface IEmployeeStorageWithMemoryCache : IEmployeeStorage
 {
-    Task CreateEmployeeAsync(EmployeeEntity employee);
-    Task<EmployeeEntity?> GetEmployeeAsync(Guid id);
-    Task<List<EmployeeEntity>> GetEmployeesAsync();
-    Task UpdateEmployeeAsync(EmployeeEntity employee);
-    Task DeleteEmployeeAsync(Guid id);
-    Task<List<EmployeeEntity>> SearchEmployeesAsync(string? name, string? department);
 }

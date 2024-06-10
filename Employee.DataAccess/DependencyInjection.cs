@@ -21,6 +21,7 @@ public static class DependencyInjection
         services.AddMemoryCache();
 
         services.AddScoped<IEmployeeStorage, EmployeeStorage>();
+        services.AddScoped<IEmployeeStorage, EmployeeStorage>();
         services.AddScoped<IEmployeeStorageWithMemoryCache, EmployeeStorageWithMemoryCache>();
 
         return services;
