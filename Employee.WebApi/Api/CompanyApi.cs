@@ -25,11 +25,6 @@ public static class CompanyApi
             return Results.Ok(companies.Select(company => company.MapToDto()));
         });
 
-        app.MapGet("/parent/{parentCompanyId}", async (Guid parentCompanyId) =>
-        {
-            return Results.Ok();
-        });
-
         return app;
     }
 }
