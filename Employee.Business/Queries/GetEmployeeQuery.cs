@@ -1,5 +1,6 @@
 ﻿using Employee.Business.Models;
 using Employee.Business.Queries.Interfaces;
+using Employee.DataAccess;
 using Employee.DataAccess.Storage.Interfaces;
 
 namespace Employee.Business;
@@ -7,29 +8,29 @@ namespace Employee.Business;
 public class GetEmployeeQuery : IGetEmployeeQuery
 {
     private readonly IEmployeeStorageWithMemoryCache _employeeStorage;
+    private readonly ICompanyService _companyService;
 
-    public GetEmployeeQuery(IEmployeeStorageWithMemoryCache employeeStorage)
+    public GetEmployeeQuery(IEmployeeStorageWithMemoryCache employeeStorage, ICompanyService companyService)
     {
         _employeeStorage = employeeStorage;
+        _companyService = companyService;
     }
 
     public async Task<EmployeeModel> ExecuteAsync(Guid request)
     {
-        var employee = await _employeeStorage.GetEmployeeAsync(request);
+        EmployeeEntity? employeeEntity = await _employeeStorage.GetEmployeeAsync(request);
 
-        if (employee == null)
+        CompanyModel? companyInfo = null;
+        if (employeeEntity?.CompanyId != null)
         {
-            throw new Exception("Employee not found");
+            var companyViewModel = await _companyService.GetCompanyAsync(employeeEntity.CompanyId.Value);
+            companyInfo = companyViewModel?.MapToModel();
         }
 
-        return new EmployeeModel
-        {
-            Id = employee.Id,
-            FullName = employee.FullName,
-            Email = employee.Email,
-            DateOfBirth = employee.DateOfBirth,
-            Department = employee.Department,
-            Salary = employee.Salary,
-        };
+        EmployeeModel? employee = employeeEntity?.MapToModel(companyInfo);
+
+        EmployeeValidator.ValidateEmployeeExists(employee);
+
+        return employee!;
     }
 }

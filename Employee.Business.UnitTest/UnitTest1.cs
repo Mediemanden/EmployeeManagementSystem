@@ -1,19 +1,21 @@
 using System;
 using Employee.Business.Commands;
 using Employee.Business.Models;
-using Employee.DataAccess.Interfaces;
+using Employee.DataAccess;
+using Employee.DataAccess.Storage.Interfaces;
 using NSubstitute;
 
 namespace Employee.Business.UnitTest;
 
 public class CreateEmployeeTests
 {
-    private IEmployeeStorage _employeeStorageMock;
-
+    private IEmployeeStorageWithMemoryCache _employeeStorageMock;
+    private ICompanyService _companyServiceMock;
     [SetUp]
     public void Setup()
     {
-        _employeeStorageMock = Substitute.For<IEmployeeStorage>();
+        _employeeStorageMock = Substitute.For<IEmployeeStorageWithMemoryCache>();
+        _companyServiceMock = Substitute.For<ICompanyService>();
     }
 
     [Test]
@@ -30,7 +32,7 @@ public class CreateEmployeeTests
         };
 
         // Setup
-        var command = new CreateEmployeeCommand(_employeeStorageMock);
+        var command = new CreateEmployeeCommand(_employeeStorageMock, _companyServiceMock);
 
         // Act and Assert
         EmsException ex = Assert.ThrowsAsync<EmsException>(() => command.ExecuteAsync(employee));
@@ -52,7 +54,7 @@ public class CreateEmployeeTests
         };
 
         // Setup
-        var command = new CreateEmployeeCommand(_employeeStorageMock);
+        var command = new CreateEmployeeCommand(_employeeStorageMock, _companyServiceMock);
 
         // Act and Assert
         EmsException ex = Assert.ThrowsAsync<EmsException>(() => command.ExecuteAsync(employee));

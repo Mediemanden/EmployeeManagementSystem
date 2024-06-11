@@ -36,8 +36,20 @@ app.UseExceptionHandler(exceptionHandlerApp
             context.Response.ContentType = "application/json";
             await context.Response.WriteAsJsonAsync(new
             {
-                error = emsException.Message
+                error = emsException.Message,
+                errorCode = emsException.Code
             });
+        }
+        else
+        {
+            context.Response.StatusCode = 500;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsJsonAsync(new
+            {
+                error = exceptionHandlerPathFeature?.Error?.Message ?? "An unknown error occurred",
+                errorCode = ExceptionCodes.GeneralError__1000
+            });
+
         }
     }));
 

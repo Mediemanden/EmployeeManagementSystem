@@ -11,7 +11,6 @@ public class EmployeeStorage : IEmployeeStorage
     public EmployeeStorage(EmployeeDbContext dbContext)
     {
         _dbContext = dbContext;
-        _dbContext.Database.EnsureCreated();
     }
 
     public async Task CreateEmployeeAsync(EmployeeEntity employee)

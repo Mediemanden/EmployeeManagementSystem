@@ -8,6 +8,7 @@ public class EmployeeEntity
     public required string Department { get; set; }
     public string? Email { get; set; }
     public decimal? Salary { get; set; }
+    public Guid? CompanyId { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime ModifiedDate { get; set; }
 }

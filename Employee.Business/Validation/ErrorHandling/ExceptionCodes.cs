@@ -16,4 +16,6 @@ public enum ExceptionCodes
     EmployeeNotFound__1404 = 1404,
     [Description("Employee salary must be greater than 0. No one works for free!")]
     EmployeeSalaryInvalid__1405 = 1405,
+    [Description("Company with given ID not found")]
+    CompanyNotFound__1501 = 1501,
 }

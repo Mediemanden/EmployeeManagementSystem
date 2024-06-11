@@ -14,6 +14,7 @@ public static class EmployeeMapper
             Department = dto.Department,
             Email = dto.Email,
             Salary = dto.Salary,
+            CompanyId = dto.CompanyId,
         };
     }
 
@@ -27,6 +28,7 @@ public static class EmployeeMapper
             Email = model.Email,
             Age = model.Age,
             Salary = model.Salary,
+            Company = model.Company?.MapToDto(),
         };
     }
 }

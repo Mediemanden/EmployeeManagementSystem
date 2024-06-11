@@ -21,4 +21,12 @@ public static class EmployeeValidator
             throw ExceptionHandler.GetEmsExceptionForCode(ExceptionCodes.EmployeeSalaryInvalid__1405);
         }
     }
+
+    public static void ValidateEmployeeExists(EmployeeModel? employee)
+    {
+        if (employee == null)
+        {
+            throw ExceptionHandler.GetEmsExceptionForCode(ExceptionCodes.EmployeeNotFound__1404);
+        }
+    }
 }
