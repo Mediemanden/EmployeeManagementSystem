@@ -41,57 +41,11 @@ app.UseExceptionHandler(exceptionHandlerApp
         }
     }));
 
+// CompanyApi
+app.MapGroup("/companies").RegisterCompanyApiEndpoints().WithTags("Company");
+
 // Employees API
-app.MapGet("/employees", async ([FromServices] IGetEmployeesQuery getEmployeesQuery) =>
-{
-    IEnumerable<EmployeeModel> employees = await getEmployeesQuery.ExecuteAsync(new SearchEmployeesRequest());
-
-    return TypedResults.Ok(employees.Select(employee => employee.MapToDto()));
-})
-.WithName("GetEmployees");
-
-app.MapGet("/employees/{id}", async ([FromServices] IGetEmployeeQuery getEmployeeQuery, Guid id) =>
-{
-    EmployeeModel employee = await getEmployeeQuery.ExecuteAsync(id);
-    return TypedResults.Ok(employee.MapToDto());
-})
-.WithName("GetEmployeeById");
-
-app.MapPost("/employees", async ([FromServices] ICreateEmployeeCommand createEmployeeCommand, CreateEmployeeDto employee) =>
-{
-    Guid newEmployeeId = Guid.NewGuid();
-    await createEmployeeCommand.ExecuteAsync(employee.MapToModel(newEmployeeId));
-    return TypedResults.Created($"/employees/{newEmployeeId}", newEmployeeId);
-})
-.WithName("CreateEmployee");
-
-app.MapPut("/employees/{id}", async ([FromServices] IUpdateEmployeeCommand updateEmployeeCommand, Guid id, CreateEmployeeDto employee) =>
-{
-    await updateEmployeeCommand.ExecuteAsync(employee.MapToModel(id));
-    return Results.NoContent();
-})
-.WithName("UpdateEmployee");
-
-app.MapDelete("/employees/{id}", async ([FromServices] IDeleteEmployeeCommand deleteEmployeeCommand, Guid id) =>
-{
-    await deleteEmployeeCommand.ExecuteAsync(id);
-    return Results.NoContent();
-})
-.WithName("DeleteEmployee");
-
-app.MapGet("/employees/search/", async ([FromServices] ISearchEmployeesQuery searchEmployeesQuery, string? name, string? department) =>
-{
-    SearchEmployeesRequest request = new()
-    {
-        Name = name,
-        Department = department,
-    };
-
-    IEnumerable<EmployeeModel> employees = await searchEmployeesQuery.ExecuteAsync(request);
-    return TypedResults.Ok(employees.Select(employee => employee.MapToDto()));
-})
-.WithName("SearchEmployeeByName");
-
+app.MapGroup("/employees").RegisterEmployeeApiEndpoints().WithTags("Employee");
 
 app.Run();
 
